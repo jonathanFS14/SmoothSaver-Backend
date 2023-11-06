@@ -1,9 +1,9 @@
 package project.smoothsaver.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dat3.openai_demo.dtos.ChatCompletionRequest;
-import dat3.openai_demo.dtos.ChatCompletionResponse;
-import dat3.openai_demo.dtos.MyResponse;
+import project.smoothsaver.dtos.ChatCompletionRequest;
+import project.smoothsaver.dtos.ChatCompletionResponse;
+import project.smoothsaver.dtos.MyResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

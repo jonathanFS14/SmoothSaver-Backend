@@ -1,7 +1,7 @@
 package project.smoothsaver.api;
 
-import dat3.openai_demo.dtos.MyResponse;
-import dat3.openai_demo.service.OpenAiService;
+import project.smoothsaver.dtos.MyResponse;
+import project.smoothsaver.service.OpenAiService;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import project.smoothsaver.service.OpenAiService;
 
 import java.time.Duration;
 import java.util.Map;

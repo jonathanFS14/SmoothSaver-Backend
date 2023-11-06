@@ -1,8 +1,8 @@
 package project.smoothsaver.api;
 
 
-import dat3.openai_demo.dtos.MyResponse;
-import dat3.openai_demo.service.OpenAiService;
+import project.smoothsaver.dtos.MyResponse;
+import project.smoothsaver.service.OpenAiService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

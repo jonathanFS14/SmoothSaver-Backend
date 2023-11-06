@@ -1,8 +1,8 @@
 package project.smoothsaver.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dat3.openai_demo.dtos.ChatCompletionResponse;
-import dat3.openai_demo.dtos.MyResponse;
+import project.smoothsaver.dtos.ChatCompletionResponse;
+import project.smoothsaver.dtos.MyResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
