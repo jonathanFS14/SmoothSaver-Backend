@@ -18,7 +18,7 @@ public class SallingController {
     }
 
     @GetMapping
-    public SallingResponse getItemsOnSaleByZip(/*@RequestParam String zip*/) {
+    public List<SallingResponse> getItemsOnSaleByZip(/*@RequestParam String zip*/) {
         return service.getItemsOnSale(/*zip*/ "2610");
     }
 

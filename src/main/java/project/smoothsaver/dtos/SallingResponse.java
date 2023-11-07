@@ -2,6 +2,7 @@ package project.smoothsaver.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -9,15 +10,12 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class SallingResponse {
-    private List<Supermarket> supermarkets;
 
-    @Getter
-    @Setter
-    public static class Supermarket {
         private List<ItemOnSale> clearances;
         private Store store;
-    }
+
 
     @Getter
     @Setter
@@ -29,7 +27,7 @@ public class SallingResponse {
         private String name;
         private String id;
         private String type;
-    }
+
 
     @Getter
     @Setter
@@ -52,13 +50,13 @@ public class SallingResponse {
         private LocalDateTime close;
         private boolean closed;
     }
-
+    }
     @Getter
     @Setter
     public static class ItemOnSale {
         private Offer offer;
         private Product product;
-    }
+
 
     @Getter
     @Setter
@@ -86,4 +84,6 @@ public class SallingResponse {
         private String ean;
         private String image;
     }
+    }
+
 }

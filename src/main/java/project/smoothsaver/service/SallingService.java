@@ -1,5 +1,6 @@
 package project.smoothsaver.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,19 +37,16 @@ public class SallingService {
     }
 
 
-    public SallingResponse getItemsOnSale(String zip) {
+    public List<SallingResponse> getItemsOnSale(String zip) {
         String err;
         try {
-
-          SallingResponse response = client.get()
-                    .uri((URL + zip))
+            List<SallingResponse> response =  client.get()
+                    .uri(new URI(URL + zip))
                     .header("Authorization", "Bearer " + API_KEY)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
-                    .bodyToMono(SallingResponse.class)
+                    .bodyToMono(List.class)
                     .block();
-          double msg = response.getSupermarkets().get(0).getClearances().get(0).getOffer().getDiscount();
-            System.out.println(msg);
           return response;
 
         }  catch (WebClientResponseException e){
