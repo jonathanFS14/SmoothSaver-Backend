@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 import project.smoothsaver.dtos.SallingResponse;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,13 +41,14 @@ public class SallingService {
         try {
 
           SallingResponse response = client.get()
-                    .uri(new URI(URL + zip))
+                    .uri((URL + zip))
                     .header("Authorization", "Bearer " + API_KEY)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .bodyToMono(SallingResponse.class)
                     .block();
-
+          double msg = response.getSupermarkets().get(0).getClearances().get(0).getOffer().getDiscount();
+            System.out.println(msg);
           return response;
 
         }  catch (WebClientResponseException e){
