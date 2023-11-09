@@ -7,7 +7,7 @@ import project.smoothsaver.service.SallingService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/salling")
+@RequestMapping("/api/salling/")
 @CrossOrigin(origins = "*")
 public class SallingController {
 
@@ -17,20 +17,22 @@ public class SallingController {
         this.service = service;
     }
 
-    @GetMapping("/{zip}")
+    @GetMapping("zip/{zip}")
     public List<SallingResponse> getStoresWithItemsOnSaleByZip(@PathVariable String zip) {
         return service.getItemsOnSaleZip(zip);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("id/{id}")
     public SallingResponse getStoreWithItemOnSaleById(@PathVariable String id) {
         return service.getItemOnSaleById(id);
     }
 
-    @GetMapping("/{city}")
+    @GetMapping("city/{city}")
     public List<SallingResponse> getStoresByCity(@PathVariable String city) {
         return service.getStoresCity(city);
     }
+
+
 
 
 }
