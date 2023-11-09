@@ -18,9 +18,20 @@ public class SallingController {
     }
 
     @GetMapping("/{zip}")
-    public List<SallingResponse> getItemsOnSaleByZip(@PathVariable String zip) {
-        return service.getItemsOnSale(zip);
+    public List<SallingResponse> getStoresWithItemsOnSaleByZip(@PathVariable String zip) {
+        return service.getItemsOnSaleZip(zip);
     }
+
+    @GetMapping("/{id}")
+    public SallingResponse getStoreWithItemOnSaleById(@PathVariable String id) {
+        return service.getItemOnSaleById(id);
+    }
+
+    @GetMapping("/{city}")
+    public List<SallingResponse> getStoresByCity(@PathVariable String city) {
+        return service.getStoresCity(city);
+    }
+
 
 }
 
