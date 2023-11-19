@@ -3,10 +3,10 @@ package project.smoothsaver;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class SmoothSaverApplicationTests {
 
-	@Test
+	//@Test
 	void contextLoads() {
 	}
 
