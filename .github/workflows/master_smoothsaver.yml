@@ -29,7 +29,6 @@ jobs:
         with:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
-          retention-days: 1
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,4 +50,4 @@ jobs:
           app-name: 'SmoothSaver'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_117682C62C2041AC8B12FF9BD309751C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4F74A43760D94F82B713C8F9816AABB8 }}
