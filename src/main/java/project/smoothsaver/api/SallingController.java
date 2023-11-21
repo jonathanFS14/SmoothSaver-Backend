@@ -1,5 +1,7 @@
 package project.smoothsaver.api;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import project.smoothsaver.dtos.SallingResponse;
 import project.smoothsaver.service.SallingService;
@@ -22,9 +24,14 @@ public class SallingController {
         return service.getItemsOnSaleZip(zip);
     }
 
+//    @GetMapping("id/{id}")
+//    public SallingResponse getStoreWithItemOnSaleById(@PathVariable String id) {
+//        return service.getItemOnSaleById(id);
+//    }
+
     @GetMapping("id/{id}")
-    public SallingResponse getStoreWithItemOnSaleById(@PathVariable String id) {
-        return service.getItemOnSaleById(id);
+    public Page<SallingResponse.ItemOnSale> getStoreWithItemOnSaleById(@PathVariable String id, Pageable pageable) {
+        return service.getItemOnSaleById(id, pageable);
     }
 
     @GetMapping("city/{city}")

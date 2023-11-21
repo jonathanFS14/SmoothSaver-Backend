@@ -3,6 +3,9 @@ package project.smoothsaver.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -37,7 +40,7 @@ public class SallingService {
         String err;
         try {
             List<SallingResponse> response =  client.get()
-                    .uri(new URI(URL + "?zip=" +  zip))
+                        .uri(new URI(URL + "?zip=" +  zip))
                     .header("Authorization", "Bearer " + API_KEY)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
@@ -61,17 +64,26 @@ public class SallingService {
         }
     }
 
-    public SallingResponse getItemOnSaleById(String id) {
+//
+
+    public Page<SallingResponse.ItemOnSale> getItemOnSaleById(String id, Pageable pageable) {
         String err;
         try {
-            SallingResponse response =  client.get()
+            SallingResponse response = client.get()
                     .uri(new URI(URL + id))
                     .header("Authorization", "Bearer " + API_KEY)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .bodyToMono(SallingResponse.class)
                     .block();
-            return response;
+
+            int totalElements = response.getClearances().size();
+            // Calculate the indices for the sublist
+            int start = pageable.getPageNumber() * pageable.getPageSize();
+            int end = Math.min(start + pageable.getPageSize(), totalElements);
+
+            // Return a sublist of clearances (ItemOnSale)
+            return new PageImpl<>(response.getClearances().subList(start, end), pageable, totalElements);
         }  catch (WebClientResponseException e){
             //This is how you can get the status code and message reported back by the remote API
             logger.error("Error response body: " + e.getResponseBodyAsString());
