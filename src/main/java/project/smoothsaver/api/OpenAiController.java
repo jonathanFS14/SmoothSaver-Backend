@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OpenAiController {
 
     private OpenAiService service;
-//test
+
     public OpenAiController(OpenAiService service) {
         this.service = service;
     }
@@ -40,7 +40,7 @@ public class OpenAiController {
         return buckets.computeIfAbsent(key, k -> createNewBucket());
     }
 
-    final static String SYSTEM_MESSAGE = "you are a helping assistant that provides meal suggestions based on a list of ingredients";
+    final static String SYSTEM_MESSAGE = "du er en hjælpende assistent der kommer med mad forslag baseret på en list af ingredienser";
 
 
     @GetMapping("/limited")
