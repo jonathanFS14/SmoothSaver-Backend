@@ -24,11 +24,6 @@ public class SallingController {
         return service.getItemsOnSaleZip(zip);
     }
 
-//    @GetMapping("id/{id}")
-//    public SallingResponse getStoreWithItemOnSaleById(@PathVariable String id) {
-//        return service.getItemOnSaleById(id);
-//    }
-
     @GetMapping("id/{id}")
     public Page<SallingResponse.ItemOnSale> getStoreWithItemOnSaleById(@PathVariable String id, Pageable pageable) {
         return service.getItemOnSaleById(id, pageable);

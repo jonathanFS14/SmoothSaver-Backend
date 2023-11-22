@@ -84,6 +84,7 @@ public class OpenAiService {
               .bodyToMono(ChatCompletionResponse.class)
               .block();
       String responseMsg = response.getChoices().get(0).getMessage().getContent();
+      //System.out.println(responseMsg);
       int tokensUsed = response.getUsage().getTotal_tokens();
       System.out.print("Tokens used: " + tokensUsed);
       System.out.print(". Cost ($0.0015 / 1K tokens) : $" + String.format("%6f",(tokensUsed * 0.0015 / 1000)));
