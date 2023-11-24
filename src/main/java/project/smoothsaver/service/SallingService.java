@@ -78,7 +78,7 @@ public class SallingService {
                     .block();
 
             int totalElements = response.getClearances().size();
-            // Calculate the indices for the sublist
+              // Calculate the indices for the sublist
             int start = pageable.getPageNumber() * pageable.getPageSize();
             int end = Math.min(start + pageable.getPageSize(), totalElements);
 
