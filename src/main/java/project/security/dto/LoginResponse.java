@@ -1,4 +1,4 @@
-package security.dto;
+package project.security.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

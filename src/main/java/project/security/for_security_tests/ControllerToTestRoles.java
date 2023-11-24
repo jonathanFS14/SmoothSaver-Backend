@@ -1,6 +1,6 @@
-package security.for_security_tests;
+package project.security.for_security_tests;
 
-import security.service.UserWithRolesService;
+import project.security.service.UserWithRolesService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Profile;

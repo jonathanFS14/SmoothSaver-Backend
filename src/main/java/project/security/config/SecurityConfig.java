@@ -1,6 +1,6 @@
-package security.config;
+package project.security.config;
 
-import security.error.CustomOAuth2AuthenticationEntryPoint;
+import project.security.error.CustomOAuth2AuthenticationEntryPoint;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;

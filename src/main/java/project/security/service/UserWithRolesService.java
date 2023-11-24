@@ -1,10 +1,10 @@
-package security.service;
+package project.security.service;
 
-import security.dto.UserWithRolesRequest;
-import security.dto.UserWithRolesResponse;
-import security.entity.Role;
-import security.repository.UserWithRolesRepository;
-import security.entity.UserWithRoles;
+import project.security.dto.UserWithRolesRequest;
+import project.security.dto.UserWithRolesResponse;
+import project.security.entity.Role;
+import project.security.repository.UserWithRolesRepository;
+import project.security.entity.UserWithRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

@@ -1,7 +1,7 @@
-package security.service;
+package project.security.service;
 
-import security.repository.UserWithRolesRepository;
-import security.entity.UserWithRoles;
+import project.security.repository.UserWithRolesRepository;
+import project.security.entity.UserWithRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

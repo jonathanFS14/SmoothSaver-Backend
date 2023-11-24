@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import security.entity.UserWithRoles;
+import project.security.entity.UserWithRoles;
 
 @Getter
 @Setter

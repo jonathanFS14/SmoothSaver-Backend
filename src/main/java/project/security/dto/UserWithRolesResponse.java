@@ -1,6 +1,6 @@
-package security.dto;
+package project.security.dto;
 
-import security.entity.UserWithRoles;
+import project.security.entity.UserWithRoles;
 import lombok.Getter;
 import lombok.Setter;
 

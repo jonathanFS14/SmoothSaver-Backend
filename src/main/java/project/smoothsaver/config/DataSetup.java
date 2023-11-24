@@ -5,7 +5,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import project.smoothsaver.entity.User;
 import project.smoothsaver.repository.UserRepo;
-import security.entity.Role;
+import project.security.entity.Role;
 
 @Configuration
 public class DataSetup implements ApplicationRunner {

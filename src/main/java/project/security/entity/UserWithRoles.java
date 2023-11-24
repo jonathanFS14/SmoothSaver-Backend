@@ -1,4 +1,4 @@
-package security.entity;
+package project.security.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;

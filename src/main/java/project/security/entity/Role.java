@@ -1,4 +1,4 @@
-package security.entity;
+package project.security.entity;
 
 /*
 Add required roles for your project to this enum

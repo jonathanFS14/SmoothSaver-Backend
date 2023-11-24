@@ -1,8 +1,8 @@
-package security.api;
+package project.security.api;
 
-import security.dto.LoginRequest;
-import security.dto.LoginResponse;
-import security.service.UserDetailsServiceImp;
+import project.security.dto.LoginRequest;
+import project.security.dto.LoginResponse;
+import project.security.service.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import security.entity.UserWithRoles;
+import project.security.entity.UserWithRoles;
 
 import java.time.Instant;
 import java.util.List;

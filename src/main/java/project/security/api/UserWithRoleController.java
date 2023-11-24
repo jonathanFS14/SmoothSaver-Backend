@@ -1,9 +1,9 @@
-package security.api;
+package project.security.api;
 
-import security.dto.UserWithRolesRequest;
-import security.dto.UserWithRolesResponse;
-import security.entity.Role;
-import security.service.UserWithRolesService;
+import project.security.dto.UserWithRolesRequest;
+import project.security.dto.UserWithRolesResponse;
+import project.security.entity.Role;
+import project.security.service.UserWithRolesService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

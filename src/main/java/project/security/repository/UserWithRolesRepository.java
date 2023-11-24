@@ -1,6 +1,6 @@
-package security.repository;
+package project.security.repository;
 
-import security.entity.UserWithRoles;
+import project.security.entity.UserWithRoles;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface
