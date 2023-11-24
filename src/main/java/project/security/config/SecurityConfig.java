@@ -75,6 +75,7 @@ public class SecurityConfig {
 
                 //User Endpoints
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee")).hasAuthority("ADMIN")
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/salling/zip/{zip}")).permitAll()
         );
 
         return http.build();
