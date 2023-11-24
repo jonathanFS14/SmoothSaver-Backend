@@ -1,6 +1,6 @@
-package project.smoothsaver.security.dto;
+package security.dto;
 
-import project.smoothsaver.security.entity.UserWithRoles;
+import security.entity.UserWithRoles;
 import lombok.Getter;
 import lombok.Setter;
 

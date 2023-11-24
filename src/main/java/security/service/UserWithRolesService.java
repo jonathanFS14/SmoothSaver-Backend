@@ -1,10 +1,10 @@
-package project.smoothsaver.security.service;
+package security.service;
 
-import project.smoothsaver.security.dto.UserWithRolesRequest;
-import project.smoothsaver.security.dto.UserWithRolesResponse;
-import project.smoothsaver.security.entity.Role;
-import project.smoothsaver.security.repository.UserWithRolesRepository;
-import project.smoothsaver.security.entity.UserWithRoles;
+import security.dto.UserWithRolesRequest;
+import security.dto.UserWithRolesResponse;
+import security.entity.Role;
+import security.repository.UserWithRolesRepository;
+import security.entity.UserWithRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

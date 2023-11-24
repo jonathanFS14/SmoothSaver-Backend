@@ -1,7 +1,7 @@
-package project.smoothsaver.security.service;
+package security.service;
 
-import project.smoothsaver.security.repository.UserWithRolesRepository;
-import project.smoothsaver.security.entity.UserWithRoles;
+import security.repository.UserWithRolesRepository;
+import security.entity.UserWithRoles;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,6 +1,6 @@
-package project.smoothsaver.security.config;
+package security.config;
 
-import project.smoothsaver.security.error.CustomOAuth2AuthenticationEntryPoint;
+import security.error.CustomOAuth2AuthenticationEntryPoint;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;

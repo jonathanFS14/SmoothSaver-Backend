@@ -1,4 +1,4 @@
-package project.smoothsaver.security.dto;
+package security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

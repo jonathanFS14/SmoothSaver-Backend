@@ -1,4 +1,4 @@
-package project.smoothsaver.security.entity;
+package security.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,4 +1,4 @@
-package project.smoothsaver.security.entity;
+package security.entity;
 
 /*
 Add required roles for your project to this enum

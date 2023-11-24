@@ -1,9 +1,9 @@
-package project.smoothsaver.security.api;
+package security.api;
 
-import project.smoothsaver.security.dto.UserWithRolesRequest;
-import project.smoothsaver.security.dto.UserWithRolesResponse;
-import project.smoothsaver.security.entity.Role;
-import project.smoothsaver.security.service.UserWithRolesService;
+import security.dto.UserWithRolesRequest;
+import security.dto.UserWithRolesResponse;
+import security.entity.Role;
+import security.service.UserWithRolesService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

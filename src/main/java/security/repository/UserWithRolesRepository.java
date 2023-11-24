@@ -1,6 +1,6 @@
-package project.smoothsaver.security.repository;
+package security.repository;
 
-import project.smoothsaver.security.entity.UserWithRoles;
+import security.entity.UserWithRoles;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface

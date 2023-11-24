@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import project.smoothsaver.security.entity.UserWithRoles;
-
-import java.util.ArrayList;
+import security.entity.UserWithRoles;
 
 @Getter
 @Setter

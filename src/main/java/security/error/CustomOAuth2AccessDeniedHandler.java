@@ -1,4 +1,4 @@
-package project.smoothsaver.security.error;
+package security.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
