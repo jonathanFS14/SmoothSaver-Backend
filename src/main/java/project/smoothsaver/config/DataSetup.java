@@ -5,6 +5,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import project.smoothsaver.entity.User;
 import project.smoothsaver.repository.UserRepo;
+import security.entity.Role;
 
 @Configuration
 public class DataSetup implements ApplicationRunner {
@@ -19,6 +20,7 @@ public class DataSetup implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         User user = new User("Admin", "Admin", "Admin", "Admin", "admin", "admin");
+        user.addRole(Role.ADMIN);
         userRepo.save(user);
     }
 }
