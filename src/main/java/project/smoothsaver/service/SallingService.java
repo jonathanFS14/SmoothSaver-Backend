@@ -13,9 +13,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 import project.smoothsaver.dtos.SallingResponse;
+import project.smoothsaver.entity.SallingStore;
+import project.smoothsaver.repository.SallingStoreRepository;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SallingService {
@@ -27,8 +30,15 @@ public class SallingService {
 
     public static final Logger logger = LoggerFactory.getLogger(SallingService.class);
     private final WebClient client;
+     SallingStoreRepository sallingStoreRepository;
+
     public SallingService() {
         this.client = WebClient.create();
+    }
+
+    public SallingService(WebClient client, SallingStoreRepository sallingStoreRepository) {
+        this.client = client;
+        this.sallingStoreRepository = sallingStoreRepository;
     }
     //Use this constructor for testing, to inject a mock client
     public SallingService(WebClient client) {
@@ -46,8 +56,11 @@ public class SallingService {
                     .retrieve()
                     .bodyToMono(List.class)
                     .block();
+/*
+            sallingStoreRepository.saveAll(response.stream().map(
+                    SallingStore::new).collect(Collectors.toList()));
+        */
           return response;
-
         }  catch (WebClientResponseException e){
             //This is how you can get the status code and message reported back by the remote API
             logger.error("Error response body: " + e.getResponseBodyAsString());
