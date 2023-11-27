@@ -62,7 +62,7 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(new CustomOAuth2AuthenticationEntryPoint()));
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/auth/login")).permitAll()
-                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/user-with-role")).permitAll() //Clients can create a user for themself
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/openai/test")).permitAll() //Clients can create a user for themself
 
 
                 //Allow index.html and everything else on root level. So make sure to put ALL your endpoints under /api
@@ -74,7 +74,9 @@ public class SecurityConfig {
                 //.requestMatchers(mvcMatcherBuilder.pattern("/**")).permitAll()
 
                 //User Endpoints
-                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee")).hasAuthority("ADMIN")
+                //.requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/employee")).hasAuthority("ADMIN")
+
+                .anyRequest().authenticated()
         );
 
         return http.build();
