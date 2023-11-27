@@ -62,12 +62,14 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(new CustomOAuth2AuthenticationEntryPoint()));
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/api/auth/login")).permitAll()
-                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/openai/test")).permitAll() //Clients can create a user for themself
+                //.requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/api/openai/test")).permitAll() //Clients can create a user for themself
 
 
                 //Allow index.html and everything else on root level. So make sure to put ALL your endpoints under /api
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/*")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/api/salling/**")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/api/openai/**")).permitAll()
 
                 //Use this to completely disable security (Will not work if endpoints has been marked with @PreAuthorize)
                 //.requestMatchers("/", "/**").permitAll());
