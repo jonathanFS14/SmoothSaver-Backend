@@ -3,6 +3,7 @@ package project.smoothsaver.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import org.springframework.web.server.ResponseStatusException;
 import project.smoothsaver.dtos.SallingResponse;
 import project.smoothsaver.entity.SallingStore;
+import project.smoothsaver.entity.ShoppingCart;
 import project.smoothsaver.repository.SallingStoreRepository;
 
 import java.net.URI;
@@ -141,4 +143,55 @@ public class SallingService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, err);
         }
     }
+
+//    public void addItemToCart(String itemDescription, int quantity, ShoppingCart cart, Pageable pageable) {
+//        try {
+//            // Fetching item details using a method that finds by description
+//            Page<SallingResponse.ItemOnSale> itemPage = findItemByDescription(itemDescription, pageable);
+//
+//            if (!itemPage.isEmpty()) {
+//                SallingResponse.ItemOnSale itemOnSaleApi = itemPage.getContent().get(0);
+//
+//                SallingStore.ItemOnSale itemOnSale = convertToItemOnSale(itemOnSaleApi);
+//                itemOnSale.setQuantity(quantity);
+//                cart.addItem(itemOnSale);
+//            } else {
+//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
+//            }
+//        } catch (Exception e) {
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error adding item to cart");
+//        }
+//    }
+//
+//    private SallingStore.ItemOnSale convertToItemOnSale(SallingResponse.ItemOnSale itemOnSaleApi) {
+//        SallingStore.ItemOnSale itemOnSale = new SallingStore.ItemOnSale();
+//        itemOnSale.setDescription(itemOnSaleApi.getProduct().getDescription());
+//        return itemOnSale;
+//    }
+//
+//    // Method to find item by description (you will need to implement this)
+//    private Page<SallingResponse.ItemOnSale> findItemByDescription(String storeId, String description, Pageable pageable) {
+//        try {
+//            // Fetch items for the given store ID
+//            Page<SallingResponse.ItemOnSale> itemPage = getItemOnSaleById(storeId, pageable);
+//
+//            if (!itemPage.isEmpty()) {
+//                List<SallingResponse.ItemOnSale> filteredItems = itemPage.getContent().stream()
+//                        .filter(item -> item.getProduct().getDescription() != null && item.getProduct().getDescription().contains(description))
+//                        .collect(Collectors.toList());
+//
+//                int totalElements = filteredItems.size();
+//                int start = pageable.getPageNumber() * pageable.getPageSize();
+//                int end = Math.min(start + pageable.getPageSize(), totalElements);
+//
+//                return new PageImpl<>(filteredItems.subList(start, end), pageable, totalElements);
+//            } else {
+//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No items found in the store");
+//            }
+//        } catch (Exception e) {
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching items by description");
+//        }
+//    }
+
+
 }
