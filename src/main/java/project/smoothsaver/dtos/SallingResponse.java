@@ -57,7 +57,7 @@ public class SallingResponse {
     public static class ItemOnSale {
         private Offer offer;
         private Product product;
-        //private int quantity;
+        private int quantity;
 
 
     @Getter

@@ -3,7 +3,6 @@ package project.smoothsaver.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -144,53 +143,65 @@ public class SallingService {
         }
     }
 
-//    public void addItemToCart(String itemDescription, int quantity, ShoppingCart cart, Pageable pageable) {
-//        try {
-//            // Fetching item details using a method that finds by description
-//            Page<SallingResponse.ItemOnSale> itemPage = findItemByDescription(itemDescription, pageable);
+    public void addItemToCart(String itemDescription, String storeId, int quantity, ShoppingCart cart, Pageable pageable) {
+        try {
+            Page<SallingResponse.ItemOnSale> itemPage = findItemByDescription(storeId, pageable, itemDescription);
+
+            if (!itemPage.isEmpty()) {
+                SallingResponse.ItemOnSale itemOnSaleApi = itemPage.getContent().get(0);
+
+                SallingStore.ItemOnSale itemOnSale = convertToItemOnSale(itemOnSaleApi);
+                itemOnSale.setQuantity(quantity);
+                cart.addItem(itemOnSale);
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error adding item to cart");
+        }
+    }
+
+    private SallingStore.ItemOnSale convertToItemOnSale(SallingResponse.ItemOnSale itemOnSaleApi) {
+        SallingStore.ItemOnSale itemOnSale = new SallingStore.ItemOnSale();
+        itemOnSale.setDescription(itemOnSaleApi.getProduct().getDescription());
+        return itemOnSale;
+    }
+
+    private Page<SallingResponse.ItemOnSale> findItemByDescription(String storeId, Pageable pageable, String description) {
+        try {
+            Page<SallingResponse.ItemOnSale> itemPage = getItemOnSaleById(storeId, pageable);
+
+            if (!itemPage.isEmpty()) {
+                List<SallingResponse.ItemOnSale> filteredItems = itemPage.getContent().stream()
+                        .filter(item -> item.getProduct().getDescription() != null && item.getProduct().getDescription().contains(description))
+                        .collect(Collectors.toList());
+
+                int totalElements = filteredItems.size();
+                int start = pageable.getPageNumber() * pageable.getPageSize();
+                int end = Math.min(start + pageable.getPageSize(), totalElements);
+
+                return new PageImpl<>(filteredItems.subList(start, end), pageable, totalElements);
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No items found in the store");
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching items by description");
+        }
+    }
+
+//    public ShoppingCart getCartForUser(String username) {
+//        // Check if the user already has a shopping cart
+//        ShoppingCart cart = // logic to retrieve the shopping cart from a repository or database
 //
-//            if (!itemPage.isEmpty()) {
-//                SallingResponse.ItemOnSale itemOnSaleApi = itemPage.getContent().get(0);
-//
-//                SallingStore.ItemOnSale itemOnSale = convertToItemOnSale(itemOnSaleApi);
-//                itemOnSale.setQuantity(quantity);
-//                cart.addItem(itemOnSale);
-//            } else {
-//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
-//            }
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error adding item to cart");
+//        if (cart == null) {
+//            // If no cart exists, create a new one
+//            cart = new ShoppingCart();
+//            cart.setUserId(username); // Set the user ID or username to the cart
+//            // Optionally save the new cart to the repository or database
+//            // shoppingCartRepository.save(cart);
 //        }
-//    }
 //
-//    private SallingStore.ItemOnSale convertToItemOnSale(SallingResponse.ItemOnSale itemOnSaleApi) {
-//        SallingStore.ItemOnSale itemOnSale = new SallingStore.ItemOnSale();
-//        itemOnSale.setDescription(itemOnSaleApi.getProduct().getDescription());
-//        return itemOnSale;
-//    }
-//
-//    // Method to find item by description (you will need to implement this)
-//    private Page<SallingResponse.ItemOnSale> findItemByDescription(String storeId, String description, Pageable pageable) {
-//        try {
-//            // Fetch items for the given store ID
-//            Page<SallingResponse.ItemOnSale> itemPage = getItemOnSaleById(storeId, pageable);
-//
-//            if (!itemPage.isEmpty()) {
-//                List<SallingResponse.ItemOnSale> filteredItems = itemPage.getContent().stream()
-//                        .filter(item -> item.getProduct().getDescription() != null && item.getProduct().getDescription().contains(description))
-//                        .collect(Collectors.toList());
-//
-//                int totalElements = filteredItems.size();
-//                int start = pageable.getPageNumber() * pageable.getPageSize();
-//                int end = Math.min(start + pageable.getPageSize(), totalElements);
-//
-//                return new PageImpl<>(filteredItems.subList(start, end), pageable, totalElements);
-//            } else {
-//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No items found in the store");
-//            }
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching items by description");
-//        }
+//        return cart;
 //    }
 
 

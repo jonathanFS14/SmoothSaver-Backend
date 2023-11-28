@@ -140,7 +140,7 @@ public class SallingStore {
         private String stockUnit;
         private String description;
         private String image;
-        //private int quantity;
+        private int quantity;
     }
 
     public SallingStore (SallingResponse response){
