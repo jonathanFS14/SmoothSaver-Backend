@@ -2,7 +2,9 @@ package project.smoothsaver.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,14 +33,13 @@ public class SallingService {
 
     public static final Logger logger = LoggerFactory.getLogger(SallingService.class);
     private final WebClient client;
-     SallingStoreRepository sallingStoreRepository;
 
-    public SallingService() {
+
+    SallingStoreRepository sallingStoreRepository;
+
+    @Autowired
+    public SallingService(SallingStoreRepository sallingStoreRepository) {
         this.client = WebClient.create();
-    }
-
-    public SallingService(WebClient client, SallingStoreRepository sallingStoreRepository) {
-        this.client = client;
         this.sallingStoreRepository = sallingStoreRepository;
     }
     //Use this constructor for testing, to inject a mock client
@@ -46,21 +47,21 @@ public class SallingService {
         this.client = client;
     }
 
-
     public List<SallingResponse> getItemsOnSaleZip(String zip) {
         String err;
         try {
-            List<SallingResponse> response =  client.get()
-                        .uri(new URI(URL + "?zip=" +  zip))
+            List<SallingResponse> response = client.get()
+                    .uri(new URI(URL + "?zip=" + zip))
                     .header("Authorization", "Bearer " + API_KEY)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
-                    .bodyToMono(List.class)
+                    .bodyToMono(new ParameterizedTypeReference<List<SallingResponse>>() {})
                     .block();
-/*
+
+
             sallingStoreRepository.saveAll(response.stream().map(
                     SallingStore::new).collect(Collectors.toList()));
-        */
+
           return response;
         }  catch (WebClientResponseException e){
             //This is how you can get the status code and message reported back by the remote API

@@ -76,11 +76,10 @@ public class SallingStore {
         }
 
         @Id
-        @Column(name = "sallingStore_id")
-        private String id;
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private int id;
 
         @ManyToOne
-        @MapsId
         @JoinColumn(name = "sallingStore_id")
         private SallingStore sallingStore;
 
@@ -116,11 +115,10 @@ public class SallingStore {
         }
 
         @Id
-        @Column(name = "sallingStore_id")
-        private String id;
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private int id;
 
-        @ManyToOne
-        @MapsId
+        @ManyToOne()
         @JoinColumn(name = "sallingStore_id")
         private SallingStore sallingStore;
 
@@ -145,10 +143,14 @@ public class SallingStore {
 
     public SallingStore (SallingResponse response){
         this.address = new StoreAddress(response.getStore().getAddress().getCity(), response.getStore().getAddress().getCountry(), response.getStore().getAddress().getExtra(), response.getStore().getAddress().getStreet(), response.getStore().getAddress().getZip());
+        this.address.setSallingStore(this);
         this.brand = response.getStore().getBrand();
         this.hours = response.getStore().getHours().stream().map(c -> new StoreHours(c.getDate(), c.getType(), c.getOpen(), c.getClose(), c.isClosed())).toList();
+        this.hours.forEach(c -> c.setSallingStore(this));
         this.name = response.getStore().getName();
+        this.id = response.getStore().getId();
         this.type = response.getStore().getType();
         this.clearances = response.getClearances().stream().map(c -> new ItemOnSale(c.getOffer().getCurrency(), c.getOffer().getDiscount(), c.getOffer().getEan(), c.getOffer().getEndTime(), c.getOffer().getLastUpdate(), c.getOffer().getNewPrice(), c.getOffer().getOriginalPrice(), c.getOffer().getPercentDiscount(), c.getOffer().getStartTime(), c.getOffer().getStock(), c.getOffer().getStockUnit(), c.getProduct().getDescription(), c.getProduct().getImage())).toList();
+        this.clearances.forEach(c -> c.setSallingStore(this));
     }
 }
