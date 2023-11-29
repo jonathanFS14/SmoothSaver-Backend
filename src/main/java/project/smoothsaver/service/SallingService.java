@@ -18,6 +18,7 @@ import project.smoothsaver.entity.ShoppingCart;
 import project.smoothsaver.repository.SallingStoreRepository;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,7 @@ public class SallingService {
     public static final Logger logger = LoggerFactory.getLogger(SallingService.class);
     private final WebClient client;
      SallingStoreRepository sallingStoreRepository;
+     ShoppingCart cart;
 
     public SallingService() {
         this.client = WebClient.create();
@@ -188,6 +190,10 @@ public class SallingService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching items by description");
         }
     }
+
+//    public List<SallingStore.ItemOnSale> getAllCartItems() {
+//        return cart.getAllItems();
+//    }
 
 //    public ShoppingCart getCartForUser(String username) {
 //        // Check if the user already has a shopping cart
