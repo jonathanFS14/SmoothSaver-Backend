@@ -85,6 +85,20 @@ public class SallingService {
     public Page<SallingResponse.ItemOnSale> getItemOnSaleById(String id, Pageable pageable) {
         String err;
         try {
+
+            /*
+            Page<SallingStore> DBResponse = sallingStoreRepository.findSallingStoreById(id, pageable);
+
+                SallingStore store =  DBResponse.get();
+
+                SallingResponse response = new SallingResponse(store);
+                int totalElements = response.getClearances().size();
+                // Calculate the indices for the sublist
+                int start = pageable.getPageNumber() * pageable.getPageSize();
+                int end = Math.min(start + pageable.getPageSize(), totalElements);
+                return new PageImpl<>(response.getClearances().subList(start, end), pageable, totalElements);
+
+*/
             SallingResponse response = client.get()
                     .uri(new URI(URL + id))
                     .header("Authorization", "Bearer " + API_KEY)
