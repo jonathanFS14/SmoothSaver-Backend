@@ -21,6 +21,7 @@ import project.smoothsaver.repository.SallingStoreRepository;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +51,7 @@ public class SallingService {
     public List<SallingResponse> getItemsOnSaleZip(String zip) {
         String err;
         try {
+
             List<SallingResponse> response = client.get()
                     .uri(new URI(URL + "?zip=" + zip))
                     .header("Authorization", "Bearer " + API_KEY)
@@ -84,6 +86,21 @@ public class SallingService {
     public Page<SallingResponse.ItemOnSale> getItemOnSaleById(String id, Pageable pageable) {
         String err;
         try {
+
+/*
+            Page<SallingStore> DBResponse = sallingStoreRepository.findSallingStoreById(id, pageable);
+
+                SallingStore store =  DBResponse.get();
+
+                SallingResponse response = new SallingResponse(store);
+                int totalElements = response.getClearances().size();
+                // Calculate the indices for the sublist
+                int start = pageable.getPageNumber() * pageable.getPageSize();
+                int end = Math.min(start + pageable.getPageSize(), totalElements);
+                return new PageImpl<>(response.getClearances().subList(start, end), pageable, totalElements);
+
+*/
+
             SallingResponse response = client.get()
                     .uri(new URI(URL + id))
                     .header("Authorization", "Bearer " + API_KEY)
@@ -99,6 +116,8 @@ public class SallingService {
 
             // Return a sublist of clearances (ItemOnSale)
             return new PageImpl<>(response.getClearances().subList(start, end), pageable, totalElements);
+
+
         }  catch (WebClientResponseException e){
             //This is how you can get the status code and message reported back by the remote API
             logger.error("Error response body: " + e.getResponseBodyAsString());
