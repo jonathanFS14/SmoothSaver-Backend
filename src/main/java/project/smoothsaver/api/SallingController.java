@@ -2,11 +2,15 @@ package project.smoothsaver.api;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import project.smoothsaver.dtos.MyResponse;
 import project.smoothsaver.dtos.SallingResponse;
 import project.smoothsaver.dtos.ShoppingCartRequest;
+import project.smoothsaver.entity.SallingStore;
 import project.smoothsaver.entity.ShoppingCart;
 import project.smoothsaver.service.SallingService;
 
@@ -39,20 +43,21 @@ public class SallingController {
         return service.getStoresCity(city);
     }
 
+//    @GetMapping("cart/items")
+//    public List<SallingStore.ItemOnSale> getAllCartItems() {
+//        return service.getAllCartItems();
+//    }
+
     @PostMapping("addToCart")
-    public ResponseEntity<Void> addItemToCart(@RequestBody ShoppingCartRequest request, Pageable pageable) {
-        String storeId = request.getStoreId();
-        // Temporarily create a new ShoppingCart instance for testing
-        ShoppingCart cart = new ShoppingCart();
-        // Optionally set the username or other user-related information on the cart
-        // cart.setUserId(username);
-
-        // Call the service method to add the item to the cart
-        service.addItemToCart(request.getItemDescription(), storeId, request.getQuantity(), cart, pageable);
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<MyResponse> addItemToCart(@RequestBody ShoppingCartRequest request, Pageable pageable) {
+        try {
+            ShoppingCart cart = new ShoppingCart();
+            service.addItemToCart(request.getItemDescription(), request.getStoreId(), request.getQuantity(), cart, pageable);
+            return ResponseEntity.ok().body(new MyResponse("Item added to cart successfully"));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error adding item to cart");
+        }
     }
-
 }
 
 
