@@ -41,11 +41,6 @@ public class AuthenticationController {
     this.encoder = encoder;
   }
 
-  @PostMapping("test")
-  public String test() {
-    return "test";
-  }
-
   @PostMapping("login")
   public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
 

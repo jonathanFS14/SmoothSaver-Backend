@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 public class UserWithRolesResponse {
     String userName;
     List<String> roleNames;
-    /*String email;*/
+    String email;
 
     public UserWithRolesResponse(UserWithRoles userWithRoles){
         this.userName = userWithRoles.getUsername();
         this.roleNames = userWithRoles.getRoles().stream().map(role -> role.toString()).collect(Collectors.toList());
-        /*this.email = userWithRoles.getEmail();*/
+        this.email = userWithRoles.getEmail();
     }
 
 }

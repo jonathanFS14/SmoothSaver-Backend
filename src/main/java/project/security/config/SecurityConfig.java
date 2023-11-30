@@ -70,6 +70,8 @@ public class SecurityConfig {
                 .requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/api/salling/**")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/api/openai/**")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/about")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/api/user")).permitAll()
 
                 //Use this to completely disable security (Will not work if endpoints has been marked with @PreAuthorize)
                 //.requestMatchers("/", "/**").permitAll());

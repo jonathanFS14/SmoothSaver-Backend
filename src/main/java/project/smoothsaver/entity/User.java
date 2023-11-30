@@ -11,7 +11,6 @@ import project.security.entity.UserWithRoles;
 @Setter
 @NoArgsConstructor
 @ToString
-
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "USER_TYPE")
@@ -26,12 +25,12 @@ public class User extends UserWithRoles {
     private String phoneNumber;
     @Column
     private String address;
-    @Column
-    private double credit;
+    /*@Column
+    private double credit;*/
 
 
-    public User(String firstName, String lastName, String phoneNumber, String address, String username, String password /*String email*/) {
-        super(username, password /*email*/);
+    public User(String firstName, String lastName, String phoneNumber, String address, String username, String password, String email) {
+        super(username, password, email);
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
