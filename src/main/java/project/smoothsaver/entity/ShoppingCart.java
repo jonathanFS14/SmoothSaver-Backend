@@ -8,14 +8,21 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 public class ShoppingCart {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
     private String storeId;
     private String storeName;
-    private List<SallingStore.ItemOnSale> items;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "shopping_cart_id")
+    private List<SallingStore.ItemOnSale> items = new ArrayList<>();
 
     public ShoppingCart(String storeId, List<SallingStore.ItemOnSale> items) {
         this.storeId = storeId;

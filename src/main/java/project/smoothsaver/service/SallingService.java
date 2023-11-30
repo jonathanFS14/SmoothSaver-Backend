@@ -249,22 +249,22 @@ public class SallingService {
         throw new RuntimeException("Store not found");
     }
 
-    public SallingResponse.Store fetchStoreById(String storeId) {
-        try {
-            String storeUrl = URL + storeId;
-            SallingResponse.Store store = client.get()
-                    .uri(storeUrl)
-                    .header("Authorization", "Bearer " + API_KEY)
-                    .retrieve()
-                    .bodyToMono(SallingResponse.Store.class)
-                    .block();
-
-            return store;
-
-        } catch (WebClientResponseException e) {
-            throw new ResponseStatusException(e.getStatusCode(), "Error fetching store: " + e.getMessage());
-        }
-    }
+//    public SallingResponse.Store fetchStoreById(String storeId) {
+//        try {
+//            String storeUrl = URL + storeId;
+//            SallingResponse.Store store = client.get()
+//                    .uri(storeUrl)
+//                    .header("Authorization", "Bearer " + API_KEY)
+//                    .retrieve()
+//                    .bodyToMono(SallingResponse.Store.class)
+//                    .block();
+//
+//            return store;
+//
+//        } catch (WebClientResponseException e) {
+//            throw new ResponseStatusException(e.getStatusCode(), "Error fetching store: " + e.getMessage());
+//        }
+//    }
 
 //    public List<SallingStore.ItemOnSale> getAllCartItems() {
 //        return cart.getAllItems();
