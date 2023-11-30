@@ -13,6 +13,6 @@ public class UserWithRolesRequest {
     String username;
     @NonNull
     String password;
-    /*@NonNull
-    String email;*/
+    @NonNull
+    String email;
 }

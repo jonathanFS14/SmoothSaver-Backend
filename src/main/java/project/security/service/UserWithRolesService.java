@@ -41,7 +41,7 @@ public class UserWithRolesService {
   //Only way to change roles is via the addRole method
   public UserWithRolesResponse editUserWithRoles(String username , UserWithRolesRequest body){
     UserWithRoles user = userWithRolesRepository.findById(username).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
-    /*user.setEmail(body.getEmail());*/
+    user.setEmail(body.getEmail());
     user.setPassword(body.getPassword());
     return new UserWithRolesResponse(userWithRolesRepository.save(user));
   }
@@ -56,11 +56,11 @@ public class UserWithRolesService {
     if(userWithRolesRepository.existsById(body.getUsername())){
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"This user name is taken");
     }
-    /*if(userWithRolesRepository.existsByEmail(body.getEmail())){
+    if(userWithRolesRepository.existsByEmail(body.getEmail())){
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"This email is used by another user");
-    }*/
+    }
     String pw = body.getPassword();
-    UserWithRoles userWithRoles = new UserWithRoles(body.getUsername(), pw /*body.getEmail()*/);
+    UserWithRoles userWithRoles = new UserWithRoles(body.getUsername(), pw, body.getEmail());
     if(role !=null  ) {
       userWithRoles.addRole(role);
     }
