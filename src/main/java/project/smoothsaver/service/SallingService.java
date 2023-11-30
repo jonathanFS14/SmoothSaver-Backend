@@ -73,7 +73,7 @@ public class SallingService {
                 sallingStoreRepository.saveAll(response.stream().map(
                         SallingStore::new).collect(Collectors.toList()));
             }
-            System.out.println("yeeeessss");
+
           return response;
         }  catch (WebClientResponseException e){
             //This is how you can get the status code and message reported back by the remote API
