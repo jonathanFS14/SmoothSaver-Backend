@@ -96,9 +96,7 @@ public class SallingService {
     public Page<SallingResponse.ItemOnSale> getItemOnSaleById(String id, Pageable pageable) {
         String err;
         try {
-
             SallingStore DBResponse = sallingStoreRepository.findSallingStoreById(id);
-
             if(!(DBResponse == null)) {
                 SallingResponse response = new SallingResponse(DBResponse);
                 int totalElements = response.getClearances().size();
@@ -106,23 +104,23 @@ public class SallingService {
                 int start = pageable.getPageNumber() * pageable.getPageSize();
                 int end = Math.min(start + pageable.getPageSize(), totalElements);
                 return new PageImpl<>(response.getClearances().subList(start, end), pageable, totalElements);
+            } else {
+                SallingResponse response = client.get()
+                        .uri(new URI(URL + id))
+                        .header("Authorization", "Bearer " + API_KEY)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .retrieve()
+                        .bodyToMono(SallingResponse.class)
+                        .block();
+
+                int totalElements = response.getClearances().size();
+                // Calculate the indices for the sublist
+                int start = pageable.getPageNumber() * pageable.getPageSize();
+                int end = Math.min(start + pageable.getPageSize(), totalElements);
+
+                // Return a sublist of clearances (ItemOnSale)
+                return new PageImpl<>(response.getClearances().subList(start, end), pageable, totalElements);
             }
-
-            SallingResponse response = client.get()
-                    .uri(new URI(URL + id))
-                    .header("Authorization", "Bearer " + API_KEY)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .bodyToMono(SallingResponse.class)
-                    .block();
-
-            int totalElements = response.getClearances().size();
-              // Calculate the indices for the sublist
-            int start = pageable.getPageNumber() * pageable.getPageSize();
-            int end = Math.min(start + pageable.getPageSize(), totalElements);
-
-            // Return a sublist of clearances (ItemOnSale)
-            return new PageImpl<>(response.getClearances().subList(start, end), pageable, totalElements);
 
         }  catch (WebClientResponseException e){
             //This is how you can get the status code and message reported back by the remote API
