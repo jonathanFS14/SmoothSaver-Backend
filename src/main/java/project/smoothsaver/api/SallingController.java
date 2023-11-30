@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import project.smoothsaver.dtos.MyResponse;
@@ -48,11 +49,21 @@ public class SallingController {
 //        return service.getAllCartItems();
 //    }
 
+//    @GetMapping("store/{storeId}")
+//    public SallingResponse.Store fetchStoreById(@PathVariable String storeId) {
+//        return service.fetchStoreById(storeId);
+//    }
+
+//    @GetMapping("store/{storeId}")
+//    public String fetchStoreById(@PathVariable String storeId) {
+//        return service.getStoreNameById(storeId);
+//    }
+
     @PostMapping("addToCart")
-    public ResponseEntity<MyResponse> addItemToCart(@RequestBody ShoppingCartRequest request, Pageable pageable) {
+    public ResponseEntity<MyResponse> addItemToCart(@RequestBody ShoppingCartRequest request, Pageable pageable, String storeName) {
         try {
             ShoppingCart cart = new ShoppingCart();
-            service.addItemToCart(request.getItemDescription(), request.getStoreId(), request.getQuantity(), cart, pageable);
+            service.addItemToCart(request.getItemDescription(), request.getStoreId(), request.getQuantity(), cart, pageable, storeName);
             return ResponseEntity.ok().body(new MyResponse("Item added to cart successfully"));
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error adding item to cart");

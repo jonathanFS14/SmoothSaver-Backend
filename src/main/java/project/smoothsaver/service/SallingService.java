@@ -94,7 +94,6 @@ public class SallingService {
                     .block();
 
             int totalElements = response.getClearances().size();
-              // Calculate the indices for the sublist
             int start = pageable.getPageNumber() * pageable.getPageSize();
             int end = Math.min(start + pageable.getPageSize(), totalElements);
 
@@ -145,14 +144,34 @@ public class SallingService {
         }
     }
 
-    public void addItemToCart(String itemDescription, String storeId, int quantity, ShoppingCart cart, Pageable pageable) {
+//    public void addItemToCart(String itemDescription, String storeId, int quantity, ShoppingCart cart, Pageable pageable) {
+//        try {
+//            Page<SallingResponse.ItemOnSale> itemPage = findItemByDescription(storeId, pageable, itemDescription);
+//
+//            if (!itemPage.isEmpty()) {
+//                SallingResponse.ItemOnSale itemOnSaleApi = itemPage.getContent().get(0);
+//
+//                SallingStore.ItemOnSale itemOnSale = convertToItemOnSale(itemOnSaleApi, storeId);
+//                itemOnSale.setQuantity(quantity);
+//                cart.addItem(itemOnSale);
+//            } else {
+//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
+//            }
+//        } catch (Exception e) {
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error adding item to cart");
+//        }
+//    }
+
+    public void addItemToCart(String itemDescription, String storeName, int quantity, ShoppingCart cart, Pageable pageable, String zip) {
         try {
+            String storeId = getStoreIdFromName(storeName, zip);
+
             Page<SallingResponse.ItemOnSale> itemPage = findItemByDescription(storeId, pageable, itemDescription);
 
             if (!itemPage.isEmpty()) {
                 SallingResponse.ItemOnSale itemOnSaleApi = itemPage.getContent().get(0);
 
-                SallingStore.ItemOnSale itemOnSale = convertToItemOnSale(itemOnSaleApi);
+                SallingStore.ItemOnSale itemOnSale = convertToItemOnSale(itemOnSaleApi, storeId);
                 itemOnSale.setQuantity(quantity);
                 cart.addItem(itemOnSale);
             } else {
@@ -163,9 +182,14 @@ public class SallingService {
         }
     }
 
-    private SallingStore.ItemOnSale convertToItemOnSale(SallingResponse.ItemOnSale itemOnSaleApi) {
+    private SallingStore.ItemOnSale convertToItemOnSale(SallingResponse.ItemOnSale itemOnSaleApi, String storeId) {
         SallingStore.ItemOnSale itemOnSale = new SallingStore.ItemOnSale();
         itemOnSale.setDescription(itemOnSaleApi.getProduct().getDescription());
+
+        SallingResponse.Store store = new SallingResponse.Store();
+        String storeName = store.getName(); // Or use reverse lookup method
+        store.setName(storeName);
+
         return itemOnSale;
     }
 
@@ -188,6 +212,33 @@ public class SallingService {
             }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error fetching items by description");
+        }
+    }
+
+    private String getStoreIdFromName(String storeName, String zip) {
+        List<SallingResponse> itemsOnSale = getItemsOnSaleZip(zip);
+        for (SallingResponse item : itemsOnSale) {
+            if (item.getStore().getName().equals(storeName)) {
+                return item.getStore().getId();
+            }
+        }
+        throw new RuntimeException("Store not found");
+    }
+
+    public SallingResponse.Store fetchStoreById(String storeId) {
+        try {
+            String storeUrl = URL + storeId;
+            SallingResponse.Store store = client.get()
+                    .uri(storeUrl)
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .retrieve()
+                    .bodyToMono(SallingResponse.Store.class)
+                    .block();
+
+            return store;
+
+        } catch (WebClientResponseException e) {
+            throw new ResponseStatusException(e.getStatusCode(), "Error fetching store: " + e.getMessage());
         }
     }
 

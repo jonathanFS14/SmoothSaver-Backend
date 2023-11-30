@@ -1,7 +1,8 @@
 package project.smoothsaver.entity;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -9,10 +10,17 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ShoppingCart {
 
     private String storeId;
-    private List<SallingStore.ItemOnSale> items = new ArrayList<>();
+    private String storeName;
+    private List<SallingStore.ItemOnSale> items;
+
+    public ShoppingCart(String storeId, List<SallingStore.ItemOnSale> items) {
+        this.storeId = storeId;
+        this.items = items;
+    }
 
     public void addItem(SallingStore.ItemOnSale newItem) {
         boolean itemFound = false;
