@@ -2,12 +2,15 @@ package project.smoothsaver.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
 import project.security.entity.Role;
 import project.smoothsaver.dtos.UserRequest;
 import project.smoothsaver.dtos.UserResponse;
 import project.smoothsaver.entity.User;
 import project.smoothsaver.repository.UserRepo;
+
+import java.security.Principal;
 
 @Service
 public class UserService {
@@ -31,4 +34,15 @@ public class UserService {
         newUser = userRepo.save(newUser);
         return new UserResponse(newUser, true);
     }
+
+    public UserResponse findById(String username) {
+        User user = findByUsername(username);
+        return new UserResponse(user, true);
+    }
+
+    private User findByUsername(String username) {
+        return userRepo.findById(username).
+                orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"User with this username does not exist"));
+    }
+
 }
