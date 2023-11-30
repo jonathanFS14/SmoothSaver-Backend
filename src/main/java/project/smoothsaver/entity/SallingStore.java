@@ -26,6 +26,7 @@ public class SallingStore {
     @Id
     private String id;
     private String type;
+    private String zip;
     @OneToMany(mappedBy = "sallingStore", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private List<ItemOnSale> clearances;
@@ -149,6 +150,7 @@ public class SallingStore {
         this.hours.forEach(c -> c.setSallingStore(this));
         this.name = response.getStore().getName();
         this.id = response.getStore().getId();
+        this.zip = response.getStore().getAddress().getZip();
         this.type = response.getStore().getType();
         this.clearances = response.getClearances().stream().map(c -> new ItemOnSale(c.getOffer().getCurrency(), c.getOffer().getDiscount(), c.getOffer().getEan(), c.getOffer().getEndTime(), c.getOffer().getLastUpdate(), c.getOffer().getNewPrice(), c.getOffer().getOriginalPrice(), c.getOffer().getPercentDiscount(), c.getOffer().getStartTime(), c.getOffer().getStock(), c.getOffer().getStockUnit(), c.getProduct().getDescription(), c.getProduct().getImage())).toList();
         this.clearances.forEach(c -> c.setSallingStore(this));

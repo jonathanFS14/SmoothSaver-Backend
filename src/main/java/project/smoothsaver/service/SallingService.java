@@ -52,6 +52,12 @@ public class SallingService {
     public List<SallingResponse> getItemsOnSaleZip(String zip) {
         String err;
         try {
+
+            List<SallingStore> stores = sallingStoreRepository.findSallingStoreByZip(zip);
+            if(!stores.isEmpty()) {
+                return stores.stream().map(SallingResponse::new).collect(Collectors.toList());
+            }
+
             List<SallingResponse> response =  client.get()
                         .uri(new URI(URL + "?zip=" +  zip))
                     .header("Authorization", "Bearer " + API_KEY)
@@ -60,10 +66,14 @@ public class SallingService {
                     .bodyToMono(new ParameterizedTypeReference<List<SallingResponse>>() {})
                     .block();
 
-/*
-            sallingStoreRepository.saveAll(response.stream().map(
-                    SallingStore::new).collect(Collectors.toList()));
-*/
+
+            String id = response.get(0).getStore().getId();
+            SallingStore DBResponse = sallingStoreRepository.findSallingStoreById(id);
+            if(DBResponse == null) {
+                sallingStoreRepository.saveAll(response.stream().map(
+                        SallingStore::new).collect(Collectors.toList()));
+            }
+            System.out.println("yeeeessss");
           return response;
         }  catch (WebClientResponseException e){
             //This is how you can get the status code and message reported back by the remote API
@@ -87,18 +97,17 @@ public class SallingService {
         String err;
         try {
 
-            Page<SallingStore> DBResponse = sallingStoreRepository.findSallingStoreById(id, pageable);
-/*
-                SallingStore store =  DBResponse.get().findFirst().get();
+            SallingStore DBResponse = sallingStoreRepository.findSallingStoreById(id);
 
-                SallingResponse response = new SallingResponse(store);
+            if(!(DBResponse == null)) {
+                SallingResponse response = new SallingResponse(DBResponse);
                 int totalElements = response.getClearances().size();
                 // Calculate the indices for the sublist
                 int start = pageable.getPageNumber() * pageable.getPageSize();
                 int end = Math.min(start + pageable.getPageSize(), totalElements);
                 return new PageImpl<>(response.getClearances().subList(start, end), pageable, totalElements);
+            }
 
-*/
             SallingResponse response = client.get()
                     .uri(new URI(URL + id))
                     .header("Authorization", "Bearer " + API_KEY)
