@@ -1,5 +1,6 @@
 package project.smoothsaver.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import project.smoothsaver.dtos.SallingResponse;
 import project.smoothsaver.entity.SallingStore;
 import project.smoothsaver.entity.ShoppingCart;
 import project.smoothsaver.repository.SallingStoreRepository;
+import project.smoothsaver.repository.ShoppingCartRepository;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class SallingService {
     public static final Logger logger = LoggerFactory.getLogger(SallingService.class);
     private final WebClient client;
      SallingStoreRepository sallingStoreRepository;
-     ShoppingCart cart;
+     ShoppingCartRepository cartRepository;
 
 
     @Autowired
@@ -186,7 +188,7 @@ public class SallingService {
 //        }
 //    }
 
-    public void addItemToCart(String itemDescription, String storeName, int quantity, ShoppingCart cart, Pageable pageable, String zip) {
+    public void addItemToCart(String itemDescription, String storeName, int quantity, int cartId, Pageable pageable, String zip) {
         try {
             String storeId = getStoreIdFromName(storeName, zip);
 
@@ -194,10 +196,15 @@ public class SallingService {
 
             if (!itemPage.isEmpty()) {
                 SallingResponse.ItemOnSale itemOnSaleApi = itemPage.getContent().get(0);
-
                 SallingStore.ItemOnSale itemOnSale = convertToItemOnSale(itemOnSaleApi, storeId);
                 itemOnSale.setQuantity(quantity);
+
+                ShoppingCart cart = cartRepository.findById(cartId)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+
                 cart.addItem(itemOnSale);
+
+                cartRepository.save(cart);
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
             }
@@ -205,6 +212,28 @@ public class SallingService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error adding item to cart");
         }
     }
+
+    public List<SallingStore.ItemOnSale> getCartItems(int cartId) {
+        ShoppingCart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+        return cart.getAllItems();
+    }
+
+    public ShoppingCart getCartById(int cartId) {
+        return cartRepository.findById(cartId).orElseThrow(() -> new EntityNotFoundException("Cart not found"));
+    }
+
+    public ShoppingCart saveCart(ShoppingCart cart) {
+        return cartRepository.save(cart);
+    }
+
+    public void removeItemFromCart(int cartId, String itemDescription, int quantityToRemove) {
+        ShoppingCart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
+        cart.removeItem(itemDescription, quantityToRemove);
+        cartRepository.save(cart);
+    }
+
 
     private SallingStore.ItemOnSale convertToItemOnSale(SallingResponse.ItemOnSale itemOnSaleApi, String storeId) {
         SallingStore.ItemOnSale itemOnSale = new SallingStore.ItemOnSale();

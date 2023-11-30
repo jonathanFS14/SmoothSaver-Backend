@@ -24,4 +24,7 @@ public class MyResponse {
     this.answer = answer;
     this.messages = messages;
   }
+
+  public MyResponse(String item_added_to_cart_successfully, int id) {
+  }
 }

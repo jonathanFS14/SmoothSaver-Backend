@@ -16,7 +16,9 @@ import project.smoothsaver.entity.ShoppingCart;
 import project.smoothsaver.service.SallingService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/salling/")
@@ -59,16 +61,41 @@ public class SallingController {
 //        return service.getStoreNameById(storeId);
 //    }
 
+    @GetMapping("cart/{cartId}")
+    public List<SallingStore.ItemOnSale> getCartItems(@PathVariable int cartId) {
+        return service.getCartItems(cartId);
+    }
+
     @PostMapping("addToCart")
-    public ResponseEntity<MyResponse> addItemToCart(@RequestBody ShoppingCartRequest request, Pageable pageable, String storeName) {
+    public ResponseEntity<MyResponse> addItemToCart(@RequestBody ShoppingCartRequest request, Pageable pageable) {
         try {
-            ShoppingCart cart = new ShoppingCart();
-            service.addItemToCart(request.getItemDescription(), request.getStoreId(), request.getQuantity(), cart, pageable, storeName);
-            return ResponseEntity.ok().body(new MyResponse("Item added to cart successfully"));
+            ShoppingCart cart = service.getCartById(request.getCartId());
+            if (cart == null) {
+                cart = new ShoppingCart(request.getStoreId(), new ArrayList<>());
+            }
+
+            service.addItemToCart(request.getItemDescription(), request.getStoreId(), request.getQuantity(), cart.getId(), pageable, request.getStoreId());
+
+            ShoppingCart savedCart = service.saveCart(cart);
+
+            return ResponseEntity.ok().body(new MyResponse("Item added to cart successfully", savedCart.getId()));
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error adding item to cart");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error adding item to cart", e);
         }
     }
+
+    @DeleteMapping("cart/{cartId}")
+    public ResponseEntity<?> removeItemFromCart(@PathVariable int cartId, @RequestBody ShoppingCartRequest request) {
+        try {
+            service.removeItemFromCart(cartId, request.getItemDescription(), request.getQuantity());
+            return ResponseEntity.ok().body("Item removed successfully");
+        } catch (Exception e) {
+            // Handle exceptions appropriately
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error removing item");
+        }
+    }
+
+
 }
 
 
