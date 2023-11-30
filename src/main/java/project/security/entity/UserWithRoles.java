@@ -43,12 +43,12 @@ public class UserWithRoles implements UserDetails {
   @Column(nullable = false, length = 50, unique = true)
   String username;
 
-  /*@Column(nullable = false, length = 50, unique = true)
-  String email;*/
-
   //60 = length of a bcrypt encoded password
   @Column(nullable = false, length = 60)
   String password;
+
+  @Column(nullable = false, length = 50, unique = true)
+  String email;
 
   private boolean enabled = true;
 
@@ -70,10 +70,10 @@ public class UserWithRoles implements UserDetails {
   }
 
 
-  public UserWithRoles(String user, String password /*String email*/) {
+  public UserWithRoles(String user, String password, String email) {
     this.username = user;
     setPassword(password);
-    /*this.email = email;*/
+    this.email = email;
   }
 
   public void setPassword(String pw) {
