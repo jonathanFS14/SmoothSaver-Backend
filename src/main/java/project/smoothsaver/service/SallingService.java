@@ -2,7 +2,9 @@ package project.smoothsaver.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -35,12 +37,10 @@ public class SallingService {
      SallingStoreRepository sallingStoreRepository;
      ShoppingCart cart;
 
-    public SallingService() {
-        this.client = WebClient.create();
-    }
 
-    public SallingService(WebClient client, SallingStoreRepository sallingStoreRepository) {
-        this.client = client;
+    @Autowired
+    public SallingService(SallingStoreRepository sallingStoreRepository) {
+        this.client = WebClient.create();
         this.sallingStoreRepository = sallingStoreRepository;
     }
     //Use this constructor for testing, to inject a mock client
@@ -57,12 +57,13 @@ public class SallingService {
                     .header("Authorization", "Bearer " + API_KEY)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
-                    .bodyToMono(List.class)
+                    .bodyToMono(new ParameterizedTypeReference<List<SallingResponse>>() {})
                     .block();
+
 /*
             sallingStoreRepository.saveAll(response.stream().map(
                     SallingStore::new).collect(Collectors.toList()));
-        */
+*/
           return response;
         }  catch (WebClientResponseException e){
             //This is how you can get the status code and message reported back by the remote API
@@ -86,10 +87,9 @@ public class SallingService {
         String err;
         try {
 
-            /*
             Page<SallingStore> DBResponse = sallingStoreRepository.findSallingStoreById(id, pageable);
-
-                SallingStore store =  DBResponse.get();
+/*
+                SallingStore store =  DBResponse.get().findFirst().get();
 
                 SallingResponse response = new SallingResponse(store);
                 int totalElements = response.getClearances().size();
@@ -114,6 +114,7 @@ public class SallingService {
 
             // Return a sublist of clearances (ItemOnSale)
             return new PageImpl<>(response.getClearances().subList(start, end), pageable, totalElements);
+
         }  catch (WebClientResponseException e){
             //This is how you can get the status code and message reported back by the remote API
             logger.error("Error response body: " + e.getResponseBodyAsString());
