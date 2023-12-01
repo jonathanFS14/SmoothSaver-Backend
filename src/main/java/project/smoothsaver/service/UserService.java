@@ -45,4 +45,9 @@ public class UserService {
                 orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"User with this username does not exist"));
     }
 
+    public void deleteUser(String username) {
+        User user = findByUsername(username);
+        userRepo.delete(user);
+    }
+
 }

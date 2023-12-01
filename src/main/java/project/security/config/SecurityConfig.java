@@ -73,6 +73,7 @@ public class SecurityConfig {
                 .requestMatchers(mvcMatcherBuilder.pattern("/about")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/api/user")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/api/user/profile")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/api/user/{username}")).permitAll()
 
                 //Use this to completely disable security (Will not work if endpoints has been marked with @PreAuthorize)
                 //.requestMatchers("/", "/**").permitAll());

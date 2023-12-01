@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import project.smoothsaver.dtos.UserRequest;
 import project.smoothsaver.dtos.UserResponse;
+import project.smoothsaver.entity.User;
 import project.smoothsaver.service.UserService;
 
 import java.security.Principal;
@@ -34,6 +35,11 @@ public class UserController {
         }
         String username = principal.getName();
         return userService.findById(username);
+    }
+
+    @DeleteMapping(path="/{username}")
+    void deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
     }
 }
 
