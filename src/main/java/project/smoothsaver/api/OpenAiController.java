@@ -31,7 +31,7 @@ public class OpenAiController {
 
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-    private Bucket createNewBucket() {
+    protected Bucket createNewBucket() {
         Bandwidth limit = Bandwidth.classic(BUCKET_CAPACITY, Refill.greedy(REFILL_AMOUNT, Duration.ofMinutes(REFILL_TIME)));
         return Bucket.builder().addLimit(limit).build();
     }
