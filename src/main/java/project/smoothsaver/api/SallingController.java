@@ -33,19 +33,30 @@ public class SallingController {
 
     @GetMapping("zip/{zip}")
     public List<SallingResponse> getStoresWithItemsOnSaleByZip(@PathVariable String zip) {
-        return service.getItemsOnSaleZip(zip);
+        try{
+            return service.getItemsOnSaleZip(zip);
+        } catch (RuntimeException ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving cart items", ex);
+        }
     }
 
     @GetMapping("id/{id}")
     public Page<SallingResponse.ItemOnSale> getStoreWithItemOnSaleById(@PathVariable String id, Pageable pageable) {
-        return service.getItemOnSaleById(id, pageable);
+        try{
+            return service.getItemOnSaleById(id, pageable);
+        } catch (RuntimeException ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving cart items", ex);
+        }
     }
 
     @GetMapping("city/{city}")
     public List<SallingResponse> getStoresByCity(@PathVariable String city) {
-        return service.getStoresCity(city);
+        try{
+            return service.getStoresCity(city);
+        } catch (RuntimeException ex){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving cart items", ex);
+        }
     }
-
 //    @GetMapping("cart/items")
 //    public List<SallingStore.ItemOnSale> getAllCartItems() {
 //        return service.getAllCartItems();
@@ -63,7 +74,11 @@ public class SallingController {
 
     @GetMapping("cart/{cartId}")
     public List<SallingStore.ItemOnSale> getCartItems(@PathVariable int cartId) {
-        return service.getCartItems(cartId);
+        try{
+            return service.getCartItems(cartId);
+        } catch (RuntimeException ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving cart items", ex);
+        }
     }
 
     @PostMapping("addToCart")
@@ -89,14 +104,8 @@ public class SallingController {
         try {
             service.removeItemFromCart(cartId, request.getItemDescription(), request.getQuantity());
             return ResponseEntity.ok().body("Item removed successfully");
-        } catch (Exception e) {
-            // Handle exceptions appropriately
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error removing item");
+        } catch (RuntimeException ex) {
+            throw new ResponseStatusException( HttpStatus.INTERNAL_SERVER_ERROR, "Error removing item", ex);
         }
     }
-
-
 }
-
-
-
