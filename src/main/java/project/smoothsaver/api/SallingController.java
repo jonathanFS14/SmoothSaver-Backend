@@ -36,7 +36,7 @@ public class SallingController {
         try{
             return service.getItemsOnSaleZip(zip);
         } catch (RuntimeException ex){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving cart items", ex);
+          throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving zip", ex);
         }
     }
 
@@ -45,7 +45,7 @@ public class SallingController {
         try{
             return service.getItemOnSaleById(id, pageable);
         } catch (RuntimeException ex){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving cart items", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving id", ex);
         }
     }
 
@@ -54,7 +54,7 @@ public class SallingController {
         try{
             return service.getStoresCity(city);
         } catch (RuntimeException ex){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving cart items", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error retrieving city", ex);
         }
     }
 //    @GetMapping("cart/items")
